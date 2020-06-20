@@ -1,0 +1,112 @@
+  Controller('analysis', {
+    onLoad() {
+      //$model.访问model
+    },
+    getTableColumns() {
+    return [
+      {
+        title: '指标集名称',
+        key: 'viewName',
+        dataIndex: 'viewName',
+        width: '15%',
+        render: text => getTableCell(text),
+      },
+      {
+        title: '指标名称',
+        key: 'attrName',
+        dataIndex: 'attrName',
+        width: '20%',
+        render: text => getTableCell(text),
+      },
+      {
+        title: '样本来源',
+        key: 'source',
+        dataIndex: 'source',
+        width: '15%',
+        render: text => getTableCell(text),
+      },
+      {
+        title: '时间',
+        key: 'time',
+        dataIndex: 'time',
+        width: '15%',
+        render: text => getTableCell(text),
+      },
+      {
+        title: '训练/测试集',
+        key: 'trainOrTest',
+        dataIndex: 'trainOrTest',
+        width: '10%',
+        render: text => (
+          text === 'train' ? '训练集' : text === 'test' ? '测试集' : '-'
+        ),
+      },
+      {
+        title: '正/负样本',
+        key: 'positiveOrNegative',
+        dataIndex: 'positiveOrNegative',
+        width: '10%',
+        render: text => (
+          text === 'positive' ? '正样本' : text === 'negative' ? '负样本' : '-'
+        ),
+      },
+      {
+        title: '时间窗口(分钟)',
+        key: 'window',
+        dataIndex: 'window',
+        width: '15%',
+        render: text => getTableCell(text),
+      },
+      {
+        title: '操作',
+        key: 'id',
+        dataIndex: 'id',
+        width: '15%',
+        render: (text, record) => {
+          const extend = () => { this.onExtendSample(record) };
+          const update = () => { this.onSingleUpdate(record) };
+          const preDelete = () => { 
+            Dialog.warning({
+              title: '即将删除该条样本',
+              content: '删除后将无法回滚该条样本',
+              onOk: () =>{ return $model.sampleInfoDelete.deleteSample(record) } ,
+            });
+          };
+          return (
+            <span>
+              <a className="option-text" onClick={extend}>查看</a>
+              <a className="option-text" onClick={update}>编辑</a>
+              <a className="option-text" onClick={preDelete}>删除</a>
+            </span>
+          )
+        },
+      },
+    ]
+  },
+
+  getDetailListColumns() {
+    return [
+      {
+        title: '指标集名称',
+        key: 'viewName',
+        dataIndex: 'viewName',
+        width: 100,
+        render: text => getTableCell(text),
+      },
+      {
+        title: '指标名称',
+        key: 'attrName',
+        dataIndex: 'attrName',
+        width: 100,
+        render: text => getTableCell(text),
+      },
+      {
+        title: '样本来源',
+        key: 'source',
+        dataIndex: 'source',
+        width: 100,
+        render: text => getTableCell(text),
+      },
+    ]
+  },
+  });
